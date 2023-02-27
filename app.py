@@ -87,7 +87,7 @@ adresse = st.sidebar.text_input('Adresse', '8 avenue des champs elysees PARIS FR
 start_clicked = st.sidebar.button('👉 Calculer estimation 👈', type="primary")
 if start_clicked:
     loc = Nominatim(user_agent="MyAppRE75").geocode(adresse)
-    compute = loc is not None
+    compute = (loc is not None) and ('PARIS' in adresse.upper())
     if compute:
         df_real_test = pd.DataFrame({'Nature mutation':[nature_mutation]
                                       , 'Type local':[type_local]
@@ -143,5 +143,4 @@ if start_clicked:
         st.plotly_chart(fig)
 
     else:
-        e = RuntimeError("Géolocalisation impossible, veuiller indiquer une autre adresse.")
-        st.exception(e)
+        st.header("Géolocalisation impossible, veuiller indiquer une autre adresse.")
