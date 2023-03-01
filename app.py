@@ -81,10 +81,12 @@ nature_mutation = st.sidebar.selectbox('Type de vente', ('Vente', "Vente en l'é
 type_local = st.sidebar.selectbox('Type de bien', ('Appartement', 'Maison'))
 nb_pieces = st.sidebar.slider('Nombre de pièces', 1, 8, 2, 1)
 surface = st.sidebar.slider('Surface m²', 10, 260, 80, 2)
-adresse = st.sidebar.text_input('Adresse', '8 avenue des champs elysees PARIS FRANCE')
+adresse = st.sidebar.text_input('Adresse', '50 avenue des champs elysees PARIS FRANCE')
 
+
+map_style = 'carto-positron'
 # st.header("ESTIMATION D'UN BIEN IMMOBILIER A PARIS INTRAMUROS")
-start_clicked = st.sidebar.button('👉 Calculer estimation 👈', type="primary")
+start_clicked = st.sidebar.button('👉 Calculer estimation 👈', type="primary", use_container_width=True)
 if start_clicked:
     loc = Nominatim(user_agent="MyAppRE75").geocode(adresse)
     compute = (loc is not None) and ('PARIS' in adresse.upper())
@@ -113,7 +115,6 @@ if start_clicked:
         df_full_dataset['Surface'] = df_full_dataset['Surface'].apply(lambda x : '{:.0f} m²'.format(x))
         df_full_dataset['color'] = '#8abcde'
 
-        map_style = 'carto-positron'
         fig2 = px.scatter_mapbox(df_full_dataset, lat="Latitude", lon="Longitude"
                                 , zoom=15
                                 , width=1200, height=700, hover_name='Valeur fonciere'
@@ -144,3 +145,16 @@ if start_clicked:
 
     else:
         st.header("Géolocalisation impossible, veuiller indiquer une autre adresse.")
+
+else:
+    fig = px.scatter_mapbox(pd.DataFrame({'lat':[48.86256014982167], 'lon':[2.341932519526535]})
+                            , lat='lat', lon='lon'
+                            , hover_data={'lat':False, 'lon':False}
+                            , zoom=12
+                            , width=1200, height=700
+                            , mapbox_style=map_style
+                            , opacity=1
+                            )
+    
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.plotly_chart(fig)
