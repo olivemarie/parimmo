@@ -144,7 +144,7 @@ if start_clicked:
         st.plotly_chart(fig)
 
     else:
-        st.header("Géolocalisation impossible, veuiller indiquer une autre adresse.")
+        st.header("Géolocalisation impossible, veuillez indiquer une autre adresse.")
 
 else:
     fig = px.scatter_mapbox(pd.DataFrame({'lat':[48.86256014982167], 'lon':[2.341932519526535]})
