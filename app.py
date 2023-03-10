@@ -77,12 +77,11 @@ model.load_model(sub_folder + 'data/RealEstate_PARIS_FR_2022.xgbmodel')
 preprocessor = load(open(sub_folder + 'data/preprocessor.dmp', 'rb'))
 df_full_dataset = get_full_dataset()
 
-nature_mutation = st.sidebar.selectbox('Type de vente', ('Vente', "Vente en l'état futur d'achèvement", 'Vente terrain à bâtir'))
-type_local = st.sidebar.selectbox('Type de bien', ('Appartement', 'Maison'))
+nature_mutation = st.sidebar.selectbox('Type de vente', ('Vente', "Vente en l'état futur d'achèvement"))
+type_local = st.sidebar.selectbox('Type de bien', ('Appartement'))
 nb_pieces = st.sidebar.slider('Nombre de pièces', 1, 8, 2, 1)
 surface = st.sidebar.slider('Surface m²', 10, 260, 80, 2)
 adresse = st.sidebar.text_input('Adresse', '50 avenue des champs elysees PARIS FRANCE')
-
 
 map_style = 'carto-positron'
 # st.header("ESTIMATION D'UN BIEN IMMOBILIER A PARIS INTRAMUROS")
