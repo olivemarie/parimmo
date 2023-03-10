@@ -91,7 +91,7 @@ map_style = 'carto-positron'
 # st.header("ESTIMATION D'UN BIEN IMMOBILIER A PARIS INTRAMUROS")
 start_clicked = st.sidebar.button('👉 Calculer estimation 👈', type="primary", use_container_width=True)
 if start_clicked:
-    loc = Nominatim(user_agent="MyAppRE75").geocode(adresse)
+    loc = Nominatim(user_agent="MyAppRE75").geocode(adresse, language="fr")
     compute = (loc is not None) and ('PARIS' in adresse.upper())
     if compute:
         df_real_test = pd.DataFrame({'Nature mutation':[nature_mutation]
@@ -144,7 +144,29 @@ if start_clicked:
         estimate = "Le bien est estimé à {:,} €".format(round(Y_real_test[0])).replace(',', ' ')
         st.header(estimate)
 
-        st.plotly_chart(fig)
+        col1, col2 = st.columns([4, 1])
+
+        with col1:
+            st.plotly_chart(fig, use_container_width=True)
+
+        with col2:
+            st.subheader('Secteur')
+
+            secteur_surface_m_mean = df_full_dataset['Surface_m'].mean()
+            surface_m_delta = surface - secteur_surface_m_mean
+
+            st.metric(label="Surface moyenne"
+                      , value='{:.00f} m²'.format(round(secteur_surface_m_mean, 2))
+                      , delta='{:.00f} m²'.format(round(surface_m_delta, 2))
+                      )
+
+            secteur_nb_pieces_mean = df_full_dataset['Nombre pieces principales'].mean()
+            nb_pieces_delta = nb_pieces - secteur_nb_pieces_mean
+
+            st.metric(label="Nb moyen de pièces"
+                      , value=round(secteur_nb_pieces_mean, 2)
+                      , delta=round(nb_pieces_delta, 2)
+                      )
 
     else:
         st.header("Géolocalisation impossible, veuillez indiquer une autre adresse.")
