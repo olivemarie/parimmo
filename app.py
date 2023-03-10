@@ -31,6 +31,10 @@ custom_styles= """
 .main > .block-container {
     padding-top: 2rem;
 }
+
+.main > footer {
+    display: none;
+}
 </style>
 """
 st.markdown(custom_styles, unsafe_allow_html=True)
