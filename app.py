@@ -78,7 +78,7 @@ preprocessor = load(open(sub_folder + 'data/preprocessor.dmp', 'rb'))
 df_full_dataset = get_full_dataset()
 
 nature_mutation = st.sidebar.selectbox('Type de vente', ('Vente', "Vente en l'état futur d'achèvement"))
-type_local = st.sidebar.selectbox('Type de bien', ('Appartement'))
+type_local = 'Appartement'
 nb_pieces = st.sidebar.slider('Nombre de pièces', 1, 8, 2, 1)
 surface = st.sidebar.slider('Surface m²', 10, 260, 80, 2)
 adresse = st.sidebar.text_input('Adresse', '50 avenue des champs elysees PARIS FRANCE')
