@@ -39,39 +39,6 @@ custom_styles= """
 """
 st.markdown(custom_styles, unsafe_allow_html=True)
 
-# hide_streamlit_style = """
-#             <style>
-#             #MainMenu {visibility: visible}
-#             footer {visibility: hidden;}
-#             header {visibility: visible;}
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-## Hack to reduce space up screen
-# st.markdown("""
-#         <style>
-#                 .css-k1ih3n {
-#                     padding-top: 1rem;
-#                     padding-bottom: 10rem;
-#                     padding-left: 5rem;
-#                     padding-right: 5rem;
-#                 }
-#                 .css-1d391kg {
-#                     padding-top: 3.5rem;
-#                     padding-right: 1rem;
-#                     padding-bottom: 3.5rem;
-#                     padding-left: 1rem;
-#                 }
-#                 .css-1vq4p4l {
-#                     padding-top: 1rem;
-#                     padding-right: 1rem;
-#                     padding-bottom: 1.5rem;
-#                     padding-left: 1rem;
-#                     }
-#         </style>
-#         """, unsafe_allow_html=True)
-
 @st.cache_data
 def get_full_dataset():
     return pd.read_csv(sub_folder + 'data/TempFiles/RealEstate_PARIS_FR_2022.csv')
@@ -113,6 +80,7 @@ if start_clicked:
 
         # Filtering sales around the lat/lon of desired real-estate
         df_full_dataset = df_full_dataset[(abs(df_full_dataset['Latitude'] - loc.point[0]) < 0.005) &  (abs(df_full_dataset['Longitude'] - loc.point[1]) < 0.01)]
+        df_full_dataset['Valeur fonciere raw'] = df_full_dataset['Valeur fonciere']
         df_full_dataset['Valeur fonciere'] = df_full_dataset['Valeur fonciere'].apply(lambda x : '{:,} €'.format(round(x)).replace(',', ' '))
         df_full_dataset['Surface_m'] = df_full_dataset['Surface']
         df_full_dataset['Surface'] = df_full_dataset['Surface'].apply(lambda x : '{:.0f} m²'.format(x))
@@ -141,8 +109,9 @@ if start_clicked:
         fig.add_trace(fig2.data[0])
         fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-        estimate = "Le bien est estimé à {:,} €".format(round(Y_real_test[0])).replace(',', ' ')
-        st.header(estimate)
+        estimate_raw = round(Y_real_test[0])
+        estimate = "{:,} €".format(estimate_raw).replace(',', ' ')
+        st.header("Le bien est estimé à " + estimate)
 
         col1, col2 = st.columns([4, 1])
 
@@ -151,6 +120,14 @@ if start_clicked:
 
         with col2:
             st.subheader('Secteur')
+
+            secteur_valeur_fonciere_mean = df_full_dataset['Valeur fonciere raw'].mean()
+            valeur_fonciere_delta = estimate_raw - secteur_valeur_fonciere_mean
+
+            st.metric(label="Valeur foncière moyenne"
+                    , value="{:,} €".format(round(secteur_valeur_fonciere_mean)).replace(',', ' ')
+                    , delta="{:,} €".format(round(valeur_fonciere_delta)).replace(',', ' ')
+                    )
 
             secteur_surface_m_mean = df_full_dataset['Surface_m'].mean()
             surface_m_delta = surface - secteur_surface_m_mean
