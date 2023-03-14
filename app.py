@@ -43,11 +43,11 @@ st.markdown(custom_styles, unsafe_allow_html=True)
 
 @st.cache_data
 def get_full_dataset():
-    return pd.read_csv(sub_folder + 'data/TempFiles/RealEstate_PARIS_FR_2022.csv')
+    return pd.read_csv(sub_folder + 'data/RealEstate_PARIS_FR_2022.csv')
 
 model = XGBRegressor()
-model.load_model(sub_folder + 'data/RealEstate_PARIS_FR_2022.xgbmodel')
-preprocessor = load(open(sub_folder + 'data/preprocessor.dmp', 'rb'))
+model.load_model(sub_folder + 'data/models/RealEstate_PARIS_FR_2022.xgbmodel')
+preprocessor = load(open(sub_folder + 'data/models/preprocessor.dmp', 'rb'))
 df_full_dataset = get_full_dataset()
 
 nature_mutation = st.sidebar.selectbox('Type de vente', ('Vente', "Vente en l'état futur d'achèvement"))
