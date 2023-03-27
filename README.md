@@ -1,4 +1,4 @@
-# Bloc 6 - Certification FullStack Jedha
+# Bloc 6 - Certification FullStack Jedha - Direction de projets de gestion de données
 
 📧 contact : mcolive@gmail.com
 
