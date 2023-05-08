@@ -2,7 +2,7 @@
 
 📧 contact : mcolive@gmail.com
 
-📼 vidéo :
+📼 vidéo : https://share.vidyard.com/watch/qjLQJjcEQTV7sAroRw7sk1?
 
 💻 app déployée : https://parimmo.herokuapp.com/
 
